@@ -21,8 +21,8 @@ h1,h2,h3{font-family:Manrope;letter-spacing:-.045em}h1{font-size:clamp(38px,5vw,
 .quote{margin-top:15px;background:#e6e9dd;border-radius:var(--r);padding:22px 26px;display:flex;justify-content:space-between;gap:15px;align-items:center}.quote strong{font:600 18px Manrope}.quote span{font-size:11px;color:var(--muted);white-space:nowrap}
 .content{display:grid;grid-template-columns:1.1fr .9fr;gap:15px}.accordion{display:grid;gap:10px}.acc{background:var(--paper);border:1px solid var(--line);border-radius:16px;overflow:hidden}.acc button{width:100%;padding:18px 20px;border:0;background:transparent;display:flex;justify-content:space-between;text-align:left;font-weight:700;color:var(--ink)}.acc button b{font-size:19px;color:var(--green)}.acc-body{display:none;padding:0 20px 19px;color:var(--muted);font-size:13px;line-height:1.75}.acc.open .acc-body{display:block}.acc.open button{color:var(--green)}
 .feature-list{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-.bible-search-panel{margin-bottom:28px}.bible-search-row{display:flex;gap:9px;align-items:stretch}.bible-search-row input{flex:1;min-width:0}.bible-search-row button{white-space:nowrap}.bible-search-examples{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:14px 0 18px;font-size:11px;color:var(--muted)}.bible-search-examples button{border:1px solid var(--line);background:#f7f6f0;color:var(--deep);border-radius:20px;padding:7px 11px;font-size:11px;font-weight:700}.bible-search-examples button:hover{background:var(--sage)}.bible-results-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 0 10px;border-top:1px solid var(--line);font-size:12px}.bible-results-heading a{color:var(--green);font-weight:700;text-decoration:none}.bible-results-frame{display:block;width:100%;height:620px;border:1px solid var(--line);border-radius:13px;background:#fff}.bible-search-panel form{margin:0}
-@media(max-width:520px){.bible-search-row{flex-direction:column}.bible-search-row button{width:100%}.bible-results-heading{align-items:flex-start;flex-direction:column}.bible-results-frame{height:570px}}
+.bible-search-panel{margin-bottom:28px}.bible-search-row{display:flex;gap:9px;align-items:stretch}.bible-search-row input{flex:1;min-width:0}.bible-search-row button{white-space:nowrap}.bible-search-examples{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:14px 0 18px;font-size:11px;color:var(--muted)}.bible-search-examples button{border:1px solid var(--line);background:#f7f6f0;color:var(--deep);border-radius:20px;padding:7px 11px;font-size:11px;font-weight:700}.bible-search-examples button:hover{background:var(--sage)}.bible-search-panel form{margin:0}
+@media(max-width:520px){.bible-search-row{flex-direction:column}.bible-search-row button{width:100%}}
 
 .journey-layout{grid-template-columns:1fr}
 .journey-progress{margin:20px 0 18px;padding:17px 18px;background:#f7f6f0;border:1px solid var(--line);border-radius:16px}
@@ -136,12 +136,10 @@ footer{border-top:1px solid var(--line);padding:24px 0 35px;color:var(--muted);f
    <input id="bible-search-input" type="search" placeholder="Escribe aquí tu búsqueda…" autocomplete="off" required>
    <button class="btn primary" type="submit">Buscar en la Biblia ↗</button>
   </div>
-  <p class="muted" style="font-size:11px;margin:10px 0 0">La búsqueda se realiza en Catholic.net. Los resultados se mostrarán aquí cuando el sitio permita la visualización integrada.</p>
+  <p class="muted" style="font-size:11px;margin:10px 0 0">Al pulsar «Buscar», se abrirá Catholic.net en otra pestaña con los resultados. El sitio no permite mostrar la búsqueda de forma fiable dentro de En Camino.</p>
  </form>
  <div class="bible-search-examples"><span>Prueba con:</span><button type="button" onclick="useBibleSearch('no tengáis miedo')">No tengáis miedo</button><button type="button" onclick="useBibleSearch('perdón')">Perdón</button><button type="button" onclick="useBibleSearch('amor')">Amor</button></div>
- <div class="bible-results-heading"><strong id="bible-results-title">Resultados de búsqueda</strong><a id="bible-external-link" href="https://www.biblia.catholic.net/index.php?option=widget" target="_blank" rel="noopener noreferrer">Abrir Catholic.net en otra pestaña ↗</a></div>
- <iframe id="bible-results-frame" class="bible-results-frame" title="Resultados de búsqueda de la Biblia en Catholic.net" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" src="about:blank"></iframe>
- <p class="muted" style="font-size:11px;margin:10px 0 0">Catholic.net es un recurso externo. Si no aparecen los resultados en este espacio, utiliza el enlace para abrir la búsqueda en otra pestaña.</p>
+ <a id="bible-external-link" class="gospel-link" href="https://biblia.catholic.net/" target="_blank" rel="noopener noreferrer">Abrir Catholic.net ↗</a>
 </div>
 <div class="panel" style="margin-top:14px"><div class="tag">Otra forma de consultar</div><h3 style="margin:10px 0 6px">Biblia de la Conferencia Episcopal Española</h3><p class="muted">También puedes consultar la traducción oficial publicada por la Conferencia Episcopal Española y buscar los textos por libro y capítulo.</p><a class="gospel-link" href="https://www.conferenciaepiscopal.es/biblia/" target="_blank" rel="noopener noreferrer">Consultar la Biblia de la CEE ↗</a></div>
 <div class="section-head"><div><div class="kicker">Aprende a acercarte a ella</div><h2>Pequeñas pistas para leer la Biblia.</h2><p class="muted">Abre cada tarjeta cuando necesites una ayuda. No hay que correr: leer poco y dejarse tocar por una frase puede ser suficiente.</p></div></div>
@@ -182,9 +180,10 @@ function searchCatholicBible(event){
  const query=input.value.trim();
  if(!query){input.focus();return;}
  const url='https://biblia.catholic.net/index.php?libro=&option=widget&palabra='+encodeURIComponent(query)+'&parte=4&submit=Buscar&tipo=palabra';
- document.getElementById('bible-results-title').textContent='Resultados para «'+query+'»';
- document.getElementById('bible-external-link').href=url;
- document.getElementById('bible-results-frame').src=url;
+ const link=document.getElementById('bible-external-link');
+ link.href=url;
+ link.textContent='Abrir resultados para «'+query+'» ↗';
+ window.open(url,'_blank','noopener,noreferrer');
 }
 function useBibleSearch(value){
  const input=document.getElementById('bible-search-input');
