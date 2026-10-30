@@ -21,8 +21,7 @@ h1,h2,h3{font-family:Manrope;letter-spacing:-.045em}h1{font-size:clamp(38px,5vw,
 .quote{margin-top:15px;background:#e6e9dd;border-radius:var(--r);padding:22px 26px;display:flex;justify-content:space-between;gap:15px;align-items:center}.quote strong{font:600 18px Manrope}.quote span{font-size:11px;color:var(--muted);white-space:nowrap}
 .content{display:grid;grid-template-columns:1.1fr .9fr;gap:15px}.accordion{display:grid;gap:10px}.acc{background:var(--paper);border:1px solid var(--line);border-radius:16px;overflow:hidden}.acc button{width:100%;padding:18px 20px;border:0;background:transparent;display:flex;justify-content:space-between;text-align:left;font-weight:700;color:var(--ink)}.acc button b{font-size:19px;color:var(--green)}.acc-body{display:none;padding:0 20px 19px;color:var(--muted);font-size:13px;line-height:1.75}.acc.open .acc-body{display:block}.acc.open button{color:var(--green)}
 .feature-list{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-.bible-search-panel{margin-bottom:28px}.bible-search-row{display:flex;gap:9px;align-items:stretch}.bible-search-row input{flex:1;min-width:0}.bible-search-row button{white-space:nowrap}.bible-search-examples{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:14px 0 18px;font-size:11px;color:var(--muted)}.bible-search-examples button{border:1px solid var(--line);background:#f7f6f0;color:var(--deep);border-radius:20px;padding:7px 11px;font-size:11px;font-weight:700}.bible-search-examples button:hover{background:var(--sage)}.bible-search-panel form{margin:0}
-@media(max-width:520px){.bible-search-row{flex-direction:column}.bible-search-row button{width:100%}}
+.bible-search-panel{margin-bottom:28px}
 
 .journey-layout{grid-template-columns:1fr}
 .journey-progress{margin:20px 0 18px;padding:17px 18px;background:#f7f6f0;border:1px solid var(--line);border-radius:16px}
@@ -130,18 +129,12 @@ footer{border-top:1px solid var(--line);padding:24px 0 35px;color:var(--muted);f
 </div>
 <div class="section-head"><div><div class="kicker">Consulta la Palabra</div><h2>Busca en la Biblia.</h2><p class="muted">Escribe una palabra, un tema, una persona o una cita (por ejemplo, «no tengáis miedo», «perdón» o «Lucas 24, 13-35»).</p></div></div>
 <div class="panel bible-search-panel">
- <form id="bible-search-form" onsubmit="searchCatholicBible(event)">
-  <label for="bible-search-input" style="display:block;font-size:13px;font-weight:700;margin-bottom:8px">¿Qué te gustaría encontrar?</label>
-  <div class="bible-search-row">
-   <input id="bible-search-input" type="search" placeholder="Escribe aquí tu búsqueda…" autocomplete="off" required>
-   <button class="btn primary" type="submit">Buscar en la Biblia ↗</button>
-  </div>
-  <p class="muted" style="font-size:11px;margin:10px 0 0">Al pulsar «Buscar», se abrirá Catholic.net en otra pestaña con los resultados. El sitio no permite mostrar la búsqueda de forma fiable dentro de En Camino.</p>
- </form>
- <div class="bible-search-examples"><span>Prueba con:</span><button type="button" onclick="useBibleSearch('no tengáis miedo')">No tengáis miedo</button><button type="button" onclick="useBibleSearch('perdón')">Perdón</button><button type="button" onclick="useBibleSearch('amor')">Amor</button></div>
- <a id="bible-external-link" class="gospel-link" href="https://biblia.catholic.net/" target="_blank" rel="noopener noreferrer">Abrir Catholic.net ↗</a>
+ <div class="tag">Buscador bíblico católico</div>
+ <h3 style="margin:10px 0 8px">Encuentra una palabra o un pasaje.</h3>
+ <p class="muted">Puedes buscar palabras como «alegría», «perdón», «amor» o «paz», o recorrer la Biblia libro a libro y capítulo a capítulo. Quiero Ser Santo indica que utiliza la traducción oficial de la Conferencia Episcopal Española.</p>
+ <a class="gospel-link" href="https://www.quierosersanto.com/biblia/" target="_blank" rel="noopener noreferrer">Abrir el buscador de la Biblia ↗</a>
 </div>
-<div class="panel" style="margin-top:14px"><div class="tag">Otra forma de consultar</div><h3 style="margin:10px 0 6px">Biblia de la Conferencia Episcopal Española</h3><p class="muted">También puedes consultar la traducción oficial publicada por la Conferencia Episcopal Española y buscar los textos por libro y capítulo.</p><a class="gospel-link" href="https://www.conferenciaepiscopal.es/biblia/" target="_blank" rel="noopener noreferrer">Consultar la Biblia de la CEE ↗</a></div>
+<div class="panel" style="margin-top:14px"><div class="tag">Fuente de la traducción</div><h3 style="margin:10px 0 6px">Biblia de la Conferencia Episcopal Española</h3><p class="muted">Si prefieres consultar directamente la fuente oficial, puedes acceder a la Biblia de la Conferencia Episcopal Española.</p><a class="gospel-link" href="https://www.conferenciaepiscopal.es/biblia/" target="_blank" rel="noopener noreferrer">Consultar la Biblia de la CEE ↗</a></div>
 <div class="section-head"><div><div class="kicker">Aprende a acercarte a ella</div><h2>Pequeñas pistas para leer la Biblia.</h2><p class="muted">Abre cada tarjeta cuando necesites una ayuda. No hay que correr: leer poco y dejarse tocar por una frase puede ser suficiente.</p></div></div>
 <div class="accordion">
 <div class="acc" id="biblia-como-leer"><button onclick="acc(this)">01 · ¿Cómo leo un texto bíblico? <b>＋</b></button><div class="acc-body"><p>Prueba estos cuatro pasos. Puedes hacerlos a solas o compartirlos en grupo:</p><ol><li><strong>Leo:</strong> lee el pasaje despacio, incluso dos veces. Fíjate en quién aparece y qué sucede.</li><li><strong>Descubro:</strong> ¿qué dice el texto? ¿Qué hace o dice Jesús? ¿Qué detalle te llama la atención?</li><li><strong>Conecto:</strong> ¿qué tiene que ver con mi vida, mis relaciones o algo que está pasando a mi alrededor?</li><li><strong>Respondo:</strong> termina con una pregunta, una oración o un pequeño gesto que puedas intentar.</li></ol><p>No tienes que encontrar una respuesta brillante. Una pregunta sincera también puede ser un buen comienzo.</p></div></div>
@@ -174,22 +167,6 @@ function go(id){document.querySelectorAll('.view').forEach(v=>v.classList.toggle
 buttons.forEach(b=>b.addEventListener('click',()=>go(b.dataset.view)));
 function acc(b){const el=b.parentElement;el.classList.toggle('open');b.querySelector('b').textContent=el.classList.contains('open')?'−':'＋';}
 
-function searchCatholicBible(event){
- event.preventDefault();
- const input=document.getElementById('bible-search-input');
- const query=input.value.trim();
- if(!query){input.focus();return;}
- const url='https://biblia.catholic.net/index.php?libro=&option=widget&palabra='+encodeURIComponent(query)+'&parte=4&submit=Buscar&tipo=palabra';
- const link=document.getElementById('bible-external-link');
- link.href=url;
- link.textContent='Abrir resultados para «'+query+'» ↗';
- window.open(url,'_blank','noopener,noreferrer');
-}
-function useBibleSearch(value){
- const input=document.getElementById('bible-search-input');
- input.value=value;
- document.getElementById('bible-search-form').requestSubmit();
-}
 document.getElementById('today-date').textContent=new Intl.DateTimeFormat('es-ES',{weekday:'long',day:'numeric',month:'long'}).format(new Date());
 function localDateISO(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 async function loadGospel(){const status=document.getElementById('gospel-status');try{const response=await fetch('./data/evangelio.json?'+Date.now(),{cache:'no-store'});if(!response.ok)throw new Error('No se ha podido consultar el archivo diario.');const data=await response.json();applyWeeklyChallenge(data);if(data.date!==localDateISO()){document.getElementById('gospel-date').textContent='Lectura diaria pendiente de actualización';status.textContent='Todavía no está disponible la actualización de hoy. Consulta el Evangelio directamente en Vatican News.';return;}document.getElementById('gospel-date').textContent=new Intl.DateTimeFormat('es-ES',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(new Date(data.date+'T12:00:00'));document.getElementById('gospel-reference').textContent=data.reference;document.getElementById('gospel-excerpt').textContent='«'+data.excerpt+'»';document.getElementById('gospel-link').href=data.source;applyGospelReflection(data);status.textContent='Evangelio y reflexión preparados para la lectura de hoy · '+data.provider+'.';}catch(error){document.getElementById('gospel-date').textContent='No se ha podido cargar la lectura';status.textContent='Puedes consultar el Evangelio de hoy directamente en Vatican News.';}}
