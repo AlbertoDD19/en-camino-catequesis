@@ -106,21 +106,24 @@ buttons.forEach(b=>b.addEventListener('click',()=>go(b.dataset.view)));
 function acc(b){const el=b.parentElement;el.classList.toggle('open');b.querySelector('b').textContent=el.classList.contains('open')?'−':'＋';}
 document.getElementById('today-date').textContent=new Intl.DateTimeFormat('es-ES',{weekday:'long',day:'numeric',month:'long'}).format(new Date());
 function localDateISO(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
-async function loadGospel(){const status=document.getElementById('gospel-status');try{const response=await fetch('./data/evangelio.json?'+Date.now(),{cache:'no-store'});if(!response.ok)throw new Error('No se ha podido consultar el archivo diario.');const data=await response.json();if(data.date!==localDateISO()){document.getElementById('gospel-date').textContent='Lectura diaria pendiente de actualización';status.textContent='Todavía no está disponible la actualización de hoy. Consulta el Evangelio directamente en Vatican News.';return;}document.getElementById('gospel-date').textContent=new Intl.DateTimeFormat('es-ES',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(new Date(data.date+'T12:00:00'));document.getElementById('gospel-reference').textContent=data.reference;document.getElementById('gospel-excerpt').textContent='«'+data.excerpt+'»';document.getElementById('gospel-link').href=data.source;status.textContent='Actualizado automáticamente desde '+data.provider+'.';}catch(error){document.getElementById('gospel-date').textContent='No se ha podido cargar la lectura';status.textContent='Puedes consultar el Evangelio de hoy directamente en Vatican News.';}}
-const dailyPrompts=[
-{reflection:"Jesús no se queda en las palabras: mira a las personas y se acerca a sus necesidades. Pregúntate qué cambia cuando alguien se siente mirado y escuchado.",question:"¿Hay alguien a quien hoy puedas mirar con más atención y tratar con más cercanía?",title:"Acércate a alguien.",task:"Da hoy el primer paso con una persona con la que normalmente apenas hablas."},
-{reflection:"A veces esperamos tenerlo todo claro antes de dar un paso. El Evangelio invita a confiar y avanzar con lo que tenemos, sin exigirnos ser perfectos.",question:"¿Qué pequeño paso bueno llevas tiempo posponiendo por miedo o inseguridad?",title:"Da un pequeño paso.",task:"Elige una acción sencilla que sabes que puede hacer bien y hazla hoy."},
-{reflection:"La fe también se reconoce en la forma de tratar a los demás. Lo que hacemos con quien tenemos cerca puede convertirse en una manera concreta de responder a Jesús.",question:"¿Cómo cambia tu día cuando eliges responder con paciencia en lugar de hacerlo con enfado?",title:"Elige la paciencia.",task:"Antes de responder en un momento difícil, párate un instante y elige palabras que construyan."},
-{reflection:"Dios no espera que aparentes tener una vida perfecta. Puedes acercarte tal como eres, con tus preguntas, tus alegrías y aquello que te cuesta.",question:"¿Qué te gustaría contarle hoy a Dios con sinceridad, sin intentar quedar bien?",title:"Habla con sinceridad.",task:"Dedica dos minutos a hablar con Dios con tus propias palabras."},
-{reflection:"Nadie recorre el camino de la fe completamente solo. Muchas veces recibimos ayuda a través de personas que nos acompañan, y también podemos ser compañía para otros.",question:"¿Quién ha sido apoyo para ti últimamente? ¿Cómo podrías agradecerlo?",title:"Agradece y acompaña.",task:"Da las gracias a alguien que te haya ayudado o acompañado."},
-{reflection:"El Evangelio puede invitarnos a mirar de otra manera lo cotidiano. Lo pequeño, cuando está hecho con amor, también puede transformar un ambiente.",question:"¿Qué detalle pequeño podría hacer que hoy tu casa, tu clase o tu grupo sea un lugar mejor?",title:"Cuida lo cotidiano.",task:"Haz una tarea o un favor sin que tengan que pedírtelo."},
-{reflection:"Escuchar la Palabra es también dejar que nos haga una pregunta. No hace falta encontrar una respuesta inmediata: basta con no pasar de largo.",question:"¿Qué frase del Evangelio te gustaría recordar cuando termine el día?",title:"Guarda una palabra.",task:"Quédate con una frase del Evangelio y vuelve a ella en algún momento del día."}
-];
-const promptForToday=dailyPrompts[Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/86400000)%dailyPrompts.length];
-document.getElementById('daily-reflection').textContent=promptForToday.reflection;
-document.getElementById('daily-question').textContent=promptForToday.question;
-document.getElementById('daily-commit-title').textContent=promptForToday.title;
-document.getElementById('daily-commit-text').textContent=promptForToday.task;
+async function loadGospel(){const status=document.getElementById('gospel-status');try{const response=await fetch('./data/evangelio.json?'+Date.now(),{cache:'no-store'});if(!response.ok)throw new Error('No se ha podido consultar el archivo diario.');const data=await response.json();if(data.date!==localDateISO()){document.getElementById('gospel-date').textContent='Lectura diaria pendiente de actualización';status.textContent='Todavía no está disponible la actualización de hoy. Consulta el Evangelio directamente en Vatican News.';return;}document.getElementById('gospel-date').textContent=new Intl.DateTimeFormat('es-ES',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(new Date(data.date+'T12:00:00'));document.getElementById('gospel-reference').textContent=data.reference;document.getElementById('gospel-excerpt').textContent='«'+data.excerpt+'»';document.getElementById('gospel-link').href=data.source;applyGospelReflection(data);status.textContent='Evangelio y reflexión preparados para la lectura de hoy · '+data.provider+'.';}catch(error){document.getElementById('gospel-date').textContent='No se ha podido cargar la lectura';status.textContent='Puedes consultar el Evangelio de hoy directamente en Vatican News.';}}
+function applyGospelReflection(data){
+ const reflection=document.getElementById('daily-reflection');
+ const question=document.getElementById('daily-question');
+ const title=document.getElementById('daily-commit-title');
+ const task=document.getElementById('daily-commit-text');
+ if(!data.reflection||!data.question||!data.commitment_title||!data.commitment){
+  reflection.textContent='Lee despacio el pasaje completo. Fíjate en lo que hace Jesús, en quién se acerca a Él y en qué cambia después del encuentro. La reflexión de hoy se está preparando.';
+  question.textContent='¿Qué detalle concreto de este pasaje te ha llamado la atención y por qué?';
+  title.textContent='Lleva una palabra contigo.';
+  task.textContent='Elige una frase del Evangelio y busca una ocasión para ponerla en práctica hoy.';
+  return;
+ }
+ reflection.textContent=data.reflection;
+ question.textContent=data.question;
+ title.textContent=data.commitment_title;
+ task.textContent=data.commitment;
+}
 function todayStorageKey(){return 'en-camino-reflexion-'+localDateISO();}
 function saveTodayNote(){const status=document.getElementById('today-note-status');try{localStorage.setItem(todayStorageKey(),document.getElementById('today-note').value);status.textContent='Tu reflexión se ha guardado solo en este dispositivo.';}catch(e){status.textContent='No se ha podido guardar en este navegador.';}}
 function completeDailyCommit(){const status=document.getElementById('daily-commit-status');try{localStorage.setItem('en-camino-compromiso-'+localDateISO(),'done');status.textContent='Compromiso anotado. ¡Que puedas llevarlo a la vida!';document.getElementById('daily-commit-button').textContent='Compromiso anotado ✓';}catch(e){status.textContent='No se ha podido guardar el compromiso.';}}
