@@ -21,8 +21,8 @@ h1,h2,h3{font-family:Manrope;letter-spacing:-.045em}h1{font-size:clamp(38px,5vw,
 .quote{margin-top:15px;background:#e6e9dd;border-radius:var(--r);padding:22px 26px;display:flex;justify-content:space-between;gap:15px;align-items:center}.quote strong{font:600 18px Manrope}.quote span{font-size:11px;color:var(--muted);white-space:nowrap}
 .content{display:grid;grid-template-columns:1.1fr .9fr;gap:15px}.accordion{display:grid;gap:10px}.acc{background:var(--paper);border:1px solid var(--line);border-radius:16px;overflow:hidden}.acc button{width:100%;padding:18px 20px;border:0;background:transparent;display:flex;justify-content:space-between;text-align:left;font-weight:700;color:var(--ink)}.acc button b{font-size:19px;color:var(--green)}.acc-body{display:none;padding:0 20px 19px;color:var(--muted);font-size:13px;line-height:1.75}.acc.open .acc-body{display:block}.acc.open button{color:var(--green)}
 .feature-list{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-.bible-challenge{margin-bottom:28px}.bible-answer-row{display:flex;gap:9px;flex-wrap:wrap}.bible-answer-row input{flex:1;min-width:190px;border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:#fff;color:var(--ink);font:inherit;font-size:14px}.bible-feedback{font-size:13px;line-height:1.6;margin:12px 0 0;min-height:20px;color:var(--green)}.bible-reveal{margin-top:15px;padding:16px;border-radius:14px;background:#eef0e8;color:var(--deep);font-size:14px;line-height:1.7}.bible-reveal p{margin:0 0 9px}.bible-reveal .btn{margin-top:5px}
-@media(max-width:520px){.bible-answer-row{flex-direction:column}.bible-answer-row input,.bible-answer-row button{width:100%}}
+.bible-search-panel{margin-bottom:28px}.bible-search-row{display:flex;gap:9px;align-items:stretch}.bible-search-row input{flex:1;min-width:0}.bible-search-row button{white-space:nowrap}.bible-search-examples{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:14px 0 18px;font-size:11px;color:var(--muted)}.bible-search-examples button{border:1px solid var(--line);background:#f7f6f0;color:var(--deep);border-radius:20px;padding:7px 11px;font-size:11px;font-weight:700}.bible-search-examples button:hover{background:var(--sage)}.bible-results-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 0 10px;border-top:1px solid var(--line);font-size:12px}.bible-results-heading a{color:var(--green);font-weight:700;text-decoration:none}.bible-results-frame{display:block;width:100%;height:620px;border:1px solid var(--line);border-radius:13px;background:#fff}.bible-search-panel form{margin:0}
+@media(max-width:520px){.bible-search-row{flex-direction:column}.bible-search-row button{width:100%}.bible-results-heading{align-items:flex-start;flex-direction:column}.bible-results-frame{height:570px}}
 
 .journey-layout{grid-template-columns:1fr}
 .journey-progress{margin:20px 0 18px;padding:17px 18px;background:#f7f6f0;border:1px solid var(--line);border-radius:16px}
@@ -128,16 +128,22 @@ footer{border-top:1px solid var(--line);padding:24px 0 35px;color:var(--muted);f
  <article class="feature"><div class="mini">✦ Antiguo Testamento</div><h3>La historia de una alianza</h3><p>Recoge la creación, la historia del pueblo de Israel, sus oraciones, sus preguntas y la voz de los profetas. Nos prepara para comprender la historia de Jesús.</p></article>
  <article class="feature"><div class="mini">✧ Nuevo Testamento</div><h3>Jesús y las primeras comunidades</h3><p>Presenta la vida y el mensaje de Jesús, el nacimiento de la Iglesia y las cartas que acompañaron a las primeras comunidades cristianas.</p></article>
 </div>
-<div class="section-head"><div><div class="kicker">Un pequeño reto</div><h2>Busca tu cita.</h2><p class="muted">¿Te atreves a encontrar un pasaje en tu Biblia? Lee la pista, localiza el texto y comprueba si has encontrado el libro correcto.</p></div></div>
-<div class="panel bible-challenge" id="bible-challenge">
- <div class="tag" id="bible-level">Reto bíblico</div>
- <h3 id="bible-clue" style="margin:12px 0">Cargando tu reto…</h3>
- <p class="muted" id="bible-hint">Busca el libro de la Biblia que contiene esta historia.</p>
- <label for="bible-answer" style="display:block;font-size:13px;font-weight:700;margin:16px 0 7px">¿En qué libro está?</label>
- <div class="bible-answer-row"><input id="bible-answer" type="text" placeholder="Escribe el nombre del libro" autocomplete="off"><button class="btn primary" id="bible-check" type="button" onclick="checkBibleChallenge()">Comprobar</button></div>
- <p id="bible-feedback" class="bible-feedback" aria-live="polite"></p>
- <div id="bible-reveal" class="bible-reveal" hidden><p><strong>¡La has encontrado!</strong> La cita completa es <span id="bible-reference"></span>.</p><p id="bible-reflection"></p><p class="muted">Ahora lee el pasaje completo en tu Biblia y dedica un momento a pensar en la pregunta.</p><button class="btn light" type="button" onclick="nextBibleChallenge()">Otro reto ↗</button></div>
+<div class="section-head"><div><div class="kicker">Consulta la Palabra</div><h2>Busca en la Biblia.</h2><p class="muted">Escribe una palabra, un tema, una persona o una cita (por ejemplo, «no tengáis miedo», «perdón» o «Lucas 24, 13-35»).</p></div></div>
+<div class="panel bible-search-panel">
+ <form id="bible-search-form" onsubmit="searchCatholicBible(event)">
+  <label for="bible-search-input" style="display:block;font-size:13px;font-weight:700;margin-bottom:8px">¿Qué te gustaría encontrar?</label>
+  <div class="bible-search-row">
+   <input id="bible-search-input" type="search" placeholder="Escribe aquí tu búsqueda…" autocomplete="off" required>
+   <button class="btn primary" type="submit">Buscar en la Biblia ↗</button>
+  </div>
+  <p class="muted" style="font-size:11px;margin:10px 0 0">La búsqueda se realiza en Catholic.net. Los resultados se mostrarán aquí cuando el sitio permita la visualización integrada.</p>
+ </form>
+ <div class="bible-search-examples"><span>Prueba con:</span><button type="button" onclick="useBibleSearch('no tengáis miedo')">No tengáis miedo</button><button type="button" onclick="useBibleSearch('perdón')">Perdón</button><button type="button" onclick="useBibleSearch('amor')">Amor</button></div>
+ <div class="bible-results-heading"><strong id="bible-results-title">Resultados de búsqueda</strong><a id="bible-external-link" href="https://www.biblia.catholic.net/index.php?option=widget" target="_blank" rel="noopener noreferrer">Abrir Catholic.net en otra pestaña ↗</a></div>
+ <iframe id="bible-results-frame" class="bible-results-frame" title="Resultados de búsqueda de la Biblia en Catholic.net" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" src="about:blank"></iframe>
+ <p class="muted" style="font-size:11px;margin:10px 0 0">Catholic.net es un recurso externo. Si no aparecen los resultados en este espacio, utiliza el enlace para abrir la búsqueda en otra pestaña.</p>
 </div>
+<div class="panel" style="margin-top:14px"><div class="tag">Otra forma de consultar</div><h3 style="margin:10px 0 6px">Biblia de la Conferencia Episcopal Española</h3><p class="muted">También puedes consultar la traducción oficial publicada por la Conferencia Episcopal Española y buscar los textos por libro y capítulo.</p><a class="gospel-link" href="https://www.conferenciaepiscopal.es/biblia/" target="_blank" rel="noopener noreferrer">Consultar la Biblia de la CEE ↗</a></div>
 <div class="section-head"><div><div class="kicker">Aprende a acercarte a ella</div><h2>Pequeñas pistas para leer la Biblia.</h2><p class="muted">Abre cada tarjeta cuando necesites una ayuda. No hay que correr: leer poco y dejarse tocar por una frase puede ser suficiente.</p></div></div>
 <div class="accordion">
 <div class="acc" id="biblia-como-leer"><button onclick="acc(this)">01 · ¿Cómo leo un texto bíblico? <b>＋</b></button><div class="acc-body"><p>Prueba estos cuatro pasos. Puedes hacerlos a solas o compartirlos en grupo:</p><ol><li><strong>Leo:</strong> lee el pasaje despacio, incluso dos veces. Fíjate en quién aparece y qué sucede.</li><li><strong>Descubro:</strong> ¿qué dice el texto? ¿Qué hace o dice Jesús? ¿Qué detalle te llama la atención?</li><li><strong>Conecto:</strong> ¿qué tiene que ver con mi vida, mis relaciones o algo que está pasando a mi alrededor?</li><li><strong>Respondo:</strong> termina con una pregunta, una oración o un pequeño gesto que puedas intentar.</li></ol><p>No tienes que encontrar una respuesta brillante. Una pregunta sincera también puede ser un buen comienzo.</p></div></div>
@@ -170,18 +176,21 @@ function go(id){document.querySelectorAll('.view').forEach(v=>v.classList.toggle
 buttons.forEach(b=>b.addEventListener('click',()=>go(b.dataset.view)));
 function acc(b){const el=b.parentElement;el.classList.toggle('open');b.querySelector('b').textContent=el.classList.contains('open')?'−':'＋';}
 
-const bibleChallenges=[
- {clue:'Dos discípulos abandonan Jerusalén tristes. Un desconocido se pone a caminar con ellos y, al partir el pan, lo reconocen.',book:'Lucas',chapter:'24',verses:'13-35',reflection:'¿Quién ha caminado a tu lado en un momento difícil? ¿Cómo puedes acompañar tú a alguien esta semana?'},
- {clue:'Un hombre pequeño se sube a un árbol para poder ver a Jesús. Jesús lo llama por su nombre y va a su casa.',book:'Lucas',chapter:'19',verses:'1-10',reflection:'¿A quién dejamos fuera sin conocer su historia? ¿Qué gesto puede ayudar a que alguien se sienta acogido?'},
- {clue:'En medio de una tormenta, los discípulos tienen miedo. Jesús está en la barca con ellos.',book:'Marcos',chapter:'4',verses:'35-41',reflection:'¿Qué situaciones te hacen sentir inseguridad? ¿Qué personas te ayudan a recuperar la calma?'},
- {clue:'Jesús cuenta la historia de un padre que recibe con alegría a su hijo cuando este regresa a casa.',book:'Lucas',chapter:'15',verses:'11-32',reflection:'¿Qué significa para ti sentirte acogido? ¿Cómo puedes ofrecer una nueva oportunidad a alguien?'},
- {clue:'Jesús habla de un viajero al que ayudan, no quienes uno esperaba, sino un samaritano.',book:'Lucas',chapter:'10',verses:'25-37',reflection:'¿Quién puede necesitar hoy tu ayuda concreta, aunque no sea de tu círculo cercano?'},
- {clue:'Jesús enseña a sus discípulos quiénes son felices: quienes trabajan por la paz, tienen misericordia y buscan la justicia.',book:'Mateo',chapter:'5',verses:'1-12',reflection:'¿Qué bienaventuranza te cuesta más vivir? ¿Qué pequeño paso podrías dar para acercarte a ella?'}
-];
-let currentBibleChallenge=-1;
-function normalizeBibleAnswer(value){return value.trim().toLocaleLowerCase('es').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z]/g,'');}
-function nextBibleChallenge(){let next=Math.floor(Math.random()*bibleChallenges.length);if(bibleChallenges.length>1&&next===currentBibleChallenge)next=(next+1)%bibleChallenges.length;currentBibleChallenge=next;const item=bibleChallenges[next];document.getElementById('bible-level').textContent='Reto '+(next+1)+' · '+(next+1)+' de '+bibleChallenges.length;document.getElementById('bible-clue').textContent=item.clue;document.getElementById('bible-hint').textContent='Pista: busca en el índice el libro que contiene esta historia. Después localiza el capítulo y los versículos.';document.getElementById('bible-answer').value='';document.getElementById('bible-feedback').textContent='';document.getElementById('bible-reveal').hidden=true;document.getElementById('bible-check').disabled=false;}
-function checkBibleChallenge(){const input=document.getElementById('bible-answer');const feedback=document.getElementById('bible-feedback');const item=bibleChallenges[currentBibleChallenge];if(!input.value.trim()){feedback.textContent='Escribe el nombre del libro antes de comprobar.';input.focus();return;}if(normalizeBibleAnswer(input.value)===normalizeBibleAnswer(item.book)){feedback.textContent='¡Correcto! Has encontrado el libro.';document.getElementById('bible-reference').textContent=item.book+' '+item.chapter+', '+item.verses;document.getElementById('bible-reflection').textContent=item.reflection;document.getElementById('bible-reveal').hidden=false;document.getElementById('bible-check').disabled=true;}else{feedback.textContent='Todavía no. Revisa el índice de tu Biblia y vuelve a intentarlo. ¡No tengas prisa!';}}
+function searchCatholicBible(event){
+ event.preventDefault();
+ const input=document.getElementById('bible-search-input');
+ const query=input.value.trim();
+ if(!query){input.focus();return;}
+ const url='https://www.biblia.catholic.net/index.php?option=widget&palabra='+encodeURIComponent(query)+'&submit=Buscar';
+ document.getElementById('bible-results-title').textContent='Resultados para «'+query+'»';
+ document.getElementById('bible-external-link').href=url;
+ document.getElementById('bible-results-frame').src=url;
+}
+function useBibleSearch(value){
+ const input=document.getElementById('bible-search-input');
+ input.value=value;
+ document.getElementById('bible-search-form').requestSubmit();
+}
 document.getElementById('today-date').textContent=new Intl.DateTimeFormat('es-ES',{weekday:'long',day:'numeric',month:'long'}).format(new Date());
 function localDateISO(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 async function loadGospel(){const status=document.getElementById('gospel-status');try{const response=await fetch('./data/evangelio.json?'+Date.now(),{cache:'no-store'});if(!response.ok)throw new Error('No se ha podido consultar el archivo diario.');const data=await response.json();applyWeeklyChallenge(data);if(data.date!==localDateISO()){document.getElementById('gospel-date').textContent='Lectura diaria pendiente de actualización';status.textContent='Todavía no está disponible la actualización de hoy. Consulta el Evangelio directamente en Vatican News.';return;}document.getElementById('gospel-date').textContent=new Intl.DateTimeFormat('es-ES',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(new Date(data.date+'T12:00:00'));document.getElementById('gospel-reference').textContent=data.reference;document.getElementById('gospel-excerpt').textContent='«'+data.excerpt+'»';document.getElementById('gospel-link').href=data.source;applyGospelReflection(data);status.textContent='Evangelio y reflexión preparados para la lectura de hoy · '+data.provider+'.';}catch(error){document.getElementById('gospel-date').textContent='No se ha podido cargar la lectura';status.textContent='Puedes consultar el Evangelio de hoy directamente en Vatican News.';}}
@@ -206,7 +215,6 @@ function todayStorageKey(){return 'en-camino-reflexion-'+localDateISO();}
 function saveTodayNote(){const status=document.getElementById('today-note-status');try{localStorage.setItem(todayStorageKey(),document.getElementById('today-note').value);status.textContent='Tu reflexión se ha guardado solo en este dispositivo.';}catch(e){status.textContent='No se ha podido guardar en este navegador.';}}
 function completeDailyCommit(){const status=document.getElementById('daily-commit-status');try{localStorage.setItem('en-camino-compromiso-'+localDateISO(),'done');status.textContent='Compromiso anotado. ¡Que puedas llevarlo a la vida!';document.getElementById('daily-commit-button').textContent='Compromiso anotado ✓';}catch(e){status.textContent='No se ha podido guardar el compromiso.';}}
 try{document.getElementById('today-note').value=localStorage.getItem(todayStorageKey())||'';if(localStorage.getItem('en-camino-compromiso-'+localDateISO())){document.getElementById('daily-commit-status').textContent='Ya has anotado tu compromiso de hoy.';document.getElementById('daily-commit-button').textContent='Compromiso anotado ✓';}}catch(e){}
-nextBibleChallenge();
 loadGospel();
 function getProgressEntries(id){try{const key='en-camino-'+id+'-history';let entries=JSON.parse(localStorage.getItem(key)||'[]');if(!Array.isArray(entries))entries=[];const legacy=localStorage.getItem('en-camino-'+id);if(legacy&&legacy.trim()){entries.unshift({date:new Date().toISOString(),text:legacy.trim()});localStorage.setItem(key,JSON.stringify(entries));localStorage.removeItem('en-camino-'+id);}return entries;}catch(e){return [];}}
 function saveField(id,status){const field=document.getElementById(id);const message=document.getElementById(status);const value=field.value.trim();if(!value){message.textContent='Escribe algo antes de añadirlo al registro.';return;}try{const key='en-camino-'+id+'-history';const entries=getProgressEntries(id);entries.unshift({date:new Date().toISOString(),text:value});localStorage.setItem(key,JSON.stringify(entries));field.value='';message.textContent='Añadido al registro con la fecha de hoy.';renderProgressHistory(id);renderPathTimeline();}catch(e){message.textContent='No se ha podido guardar. Comprueba el espacio disponible del navegador.';}}
