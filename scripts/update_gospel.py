@@ -146,6 +146,34 @@ if theme is None:
         "commitment": "Elige una enseñanza concreta del pasaje y conviértela hoy en un gesto pequeño y posible en casa, en clase o con tus amigos."
     }
 
+# The weekly challenge is selected from Monday's Gospel and then kept
+# unchanged for the rest of the ISO week, so every visitor sees the same one.
+week_id = TODAY.strftime("%G-W%V")
+previous = {}
+if OUT.exists():
+    try:
+        previous = json.loads(OUT.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        previous = {}
+
+if previous.get("weekly_challenge_week") == week_id:
+    weekly_challenge = {
+        "weekly_challenge_week": previous.get("weekly_challenge_week"),
+        "weekly_challenge_title": previous.get("weekly_challenge_title"),
+        "weekly_challenge": previous.get("weekly_challenge"),
+        "weekly_challenge_reference": previous.get("weekly_challenge_reference"),
+        "weekly_challenge_date": previous.get("weekly_challenge_date")
+    }
+else:
+    weekly_text = theme["commitment"].replace("hoy", "esta semana").replace("Hoy", "Esta semana")
+    weekly_challenge = {
+        "weekly_challenge_week": week_id,
+        "weekly_challenge_title": theme["commitment_title"],
+        "weekly_challenge": weekly_text,
+        "weekly_challenge_reference": reference,
+        "weekly_challenge_date": TODAY.isoformat()
+    }
+
 payload = {
     "date": TODAY.isoformat(),
     "reference": reference,
@@ -154,6 +182,7 @@ payload = {
     "question": theme["question"],
     "commitment_title": theme["commitment_title"],
     "commitment": theme["commitment"],
+    **weekly_challenge,
     "source": SOURCE_URL,
     "provider": "Vatican News"
 }
