@@ -181,7 +181,7 @@ function searchCatholicBible(event){
  const input=document.getElementById('bible-search-input');
  const query=input.value.trim();
  if(!query){input.focus();return;}
- const url='https://www.biblia.catholic.net/index.php?option=widget&palabra='+encodeURIComponent(query)+'&submit=Buscar';
+ const url='https://biblia.catholic.net/index.php?libro=&option=widget&palabra='+encodeURIComponent(query)+'&parte=4&submit=Buscar&tipo=palabra';
  document.getElementById('bible-results-title').textContent='Resultados para «'+query+'»';
  document.getElementById('bible-external-link').href=url;
  document.getElementById('bible-results-frame').src=url;
