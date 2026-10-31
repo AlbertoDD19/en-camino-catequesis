@@ -22,6 +22,9 @@ h1,h2,h3{font-family:Manrope;letter-spacing:-.045em}h1{font-size:clamp(38px,5vw,
 .content{display:grid;grid-template-columns:1.1fr .9fr;gap:15px}.accordion{display:grid;gap:10px}.acc{background:var(--paper);border:1px solid var(--line);border-radius:16px;overflow:hidden}.acc button{width:100%;padding:18px 20px;border:0;background:transparent;display:flex;justify-content:space-between;text-align:left;font-weight:700;color:var(--ink)}.acc button b{font-size:19px;color:var(--green)}.acc-body{display:none;padding:0 20px 19px;color:var(--muted);font-size:13px;line-height:1.75}.acc.open .acc-body{display:block}.acc.open button{color:var(--green)}
 .feature-list{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
 .bible-search-panel{margin-bottom:28px}
+.bible-embed{width:100%;height:760px;border:1px solid var(--line);border-radius:14px;background:#fff;display:block}
+.bible-embed-note{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:12px;font-size:12px}
+@media(max-width:520px){.bible-embed{height:680px}}
 
 .journey-layout{grid-template-columns:1fr}
 .journey-progress{margin:20px 0 18px;padding:17px 18px;background:#f7f6f0;border:1px solid var(--line);border-radius:16px}
@@ -130,9 +133,10 @@ footer{border-top:1px solid var(--line);padding:24px 0 35px;color:var(--muted);f
 <div class="section-head"><div><div class="kicker">Consulta la Palabra</div><h2>Busca en la Biblia.</h2><p class="muted">Escribe una palabra, un tema, una persona o una cita (por ejemplo, «no tengáis miedo», «perdón» o «Lucas 24, 13-35»).</p></div></div>
 <div class="panel bible-search-panel">
  <div class="tag">Buscador bíblico católico</div>
- <h3 style="margin:10px 0 8px">Encuentra una palabra o un pasaje.</h3>
- <p class="muted">Puedes buscar palabras como «alegría», «perdón», «amor» o «paz», o recorrer la Biblia libro a libro y capítulo a capítulo. Quiero Ser Santo indica que utiliza la traducción oficial de la Conferencia Episcopal Española.</p>
- <a class="gospel-link" href="https://www.quierosersanto.com/biblia/" target="_blank" rel="noopener noreferrer">Abrir el buscador de la Biblia ↗</a>
+ <h3 style="margin:10px 0 8px">Busca y consulta la Palabra.</h3>
+ <p class="muted">Aquí tienes el buscador de Quiero Ser Santo integrado en En Camino. Puedes buscar palabras o recorrer los libros y capítulos de la Biblia.</p>
+ <iframe class="bible-embed" src="https://www.quierosersanto.com/biblia/" title="Buscador de la Biblia de Quiero Ser Santo" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="fullscreen"></iframe>
+ <div class="bible-embed-note"><span class="muted">Si el buscador no aparece en este espacio, puedes abrirlo directamente.</span><a class="gospel-link" href="https://www.quierosersanto.com/biblia/" target="_blank" rel="noopener noreferrer">Abrir el buscador en otra pestaña ↗</a></div>
 </div>
 <div class="panel" style="margin-top:14px"><div class="tag">Fuente de la traducción</div><h3 style="margin:10px 0 6px">Biblia de la Conferencia Episcopal Española</h3><p class="muted">Si prefieres consultar directamente la fuente oficial, puedes acceder a la Biblia de la Conferencia Episcopal Española.</p><a class="gospel-link" href="https://www.conferenciaepiscopal.es/biblia/" target="_blank" rel="noopener noreferrer">Consultar la Biblia de la CEE ↗</a></div>
 <div class="section-head"><div><div class="kicker">Aprende a acercarte a ella</div><h2>Pequeñas pistas para leer la Biblia.</h2><p class="muted">Abre cada tarjeta cuando necesites una ayuda. No hay que correr: leer poco y dejarse tocar por una frase puede ser suficiente.</p></div></div>
