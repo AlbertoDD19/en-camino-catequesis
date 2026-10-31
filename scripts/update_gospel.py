@@ -20,7 +20,7 @@ SOURCE_URL = f"https://www.vaticannews.va/es/evangelio-de-hoy/{DATE_PATH}.html"
 # Keep the language concrete, reflective and suitable for teenagers.
 THEMES = [
     {
-        "keys": ["sabado", "enfermo", "curacion", "curar", "sanar", "sanacion"],
+        "keys": ["enfermo", "curacion", "curar", "sanar", "sanacion"],
         "reflection": "En este pasaje Jesús pone a la persona por delante de una norma entendida sin corazón. Ve a quien necesita ayuda y actúa con compasión. Nos recuerda que la fe no puede convertirse en una excusa para mirar hacia otro lado.",
         "question": "¿Alguna vez has preferido seguir con lo tuyo en vez de detenerte para ayudar a alguien? ¿Qué habría hecho Jesús en tu lugar?",
         "commitment_title": "Que la compasión se note.",
@@ -34,21 +34,21 @@ THEMES = [
         "commitment": "Si has herido a alguien, reconoce tu parte y pide perdón con sinceridad. Si necesitas tiempo, empieza por decidir qué paso responsable puedes dar."
     },
     {
-        "keys": ["orar", "oracion", "rezar", "padre nuestro", "pedid", "pedir"],
+        "keys": ["orar", "oracion", "rezar", "padre nuestro", "pedid"],
         "reflection": "Jesús enseña que podemos dirigirnos a Dios con confianza y sencillez. No hacen falta frases perfectas: la oración empieza cuando nos presentamos tal como estamos, también con nuestras dudas y preocupaciones.",
         "question": "Si hoy pudieras hablar con Dios con total sinceridad, ¿qué le contarías?",
         "commitment_title": "Regálate un momento de oración.",
         "commitment": "Busca hoy dos minutos de tranquilidad y habla con Dios con tus propias palabras. Cuéntale algo que agradeces y algo para lo que necesitas ayuda."
     },
     {
-        "keys": ["pobre", "hambr", "sed", "necesitad", "limosna"],
+        "keys": ["pobre", "hambr", "necesitad", "limosna"],
         "reflection": "En este Evangelio, la atención se dirige a quienes necesitan apoyo. Jesús nos invita a no medir a las personas por lo que tienen y a reconocer que la dignidad de alguien no depende de su situación.",
         "question": "¿Quién puede estar necesitando hoy que alguien le tenga en cuenta en tu entorno?",
         "commitment_title": "Comparte lo que eres y tienes.",
         "commitment": "Haz hoy un gesto concreto de ayuda: comparte tu tiempo, escucha sin juzgar o colabora en algo que alivie la carga de otra persona."
     },
     {
-        "keys": ["paz", "pacific", "enemigo", "amaros", "ama a tu", "amor"],
+        "keys": ["pacific", "enemigo", "amaros", "ama a tu"],
         "reflection": "Jesús propone una manera de relacionarnos que rompe la lógica de devolver mal por mal. Amar no es permitir que nos traten mal: es elegir el respeto, rechazar la venganza y buscar caminos que construyan paz.",
         "question": "¿En qué situación de hoy puedes evitar alimentar un conflicto y responder con respeto?",
         "commitment_title": "Sé una persona que construye paz.",
@@ -62,14 +62,14 @@ THEMES = [
         "commitment": "Da hoy un paso para compartir una preocupación con alguien de confianza. Y estate atento por si otra persona necesita que la acompañes."
     },
     {
-        "keys": ["sembrador", "semilla", "sembrar", "tierra", "fruto"],
+        "keys": ["sembrador", "semilla", "sembrar"],
         "reflection": "La imagen de la semilla nos recuerda que crecer lleva tiempo. No todo cambia de un día para otro: nuestras decisiones, la escucha y los pequeños gestos van preparando el terreno para que algo bueno dé fruto.",
         "question": "¿Qué actitud buena te gustaría cultivar poco a poco en tu vida?",
         "commitment_title": "Cuida lo que quieres hacer crecer.",
         "commitment": "Elige una actitud —paciencia, generosidad, sinceridad o constancia— y busca una ocasión concreta para practicarla hoy."
     },
     {
-        "keys": ["perdida", "perdido", "oveja", "buscar", "encontrar"],
+        "keys": ["perdida", "perdido", "oveja"],
         "reflection": "Jesús muestra que nadie es insignificante ni queda olvidado. Para Él, cada persona importa. Este pasaje nos invita a mirar de nuevo a quienes quizá hemos dejado al margen.",
         "question": "¿Hay alguien de tu clase, familia o grupo que pueda sentirse olvidado o fuera de lugar?",
         "commitment_title": "Haz que alguien se sienta contado.",
@@ -83,7 +83,7 @@ THEMES = [
         "commitment": "Ayuda hoy en casa, en clase o con tus amigos en algo concreto, sin esperar aplausos ni que tengan que pedírtelo."
     },
     {
-        "keys": ["fe", "creer", "crees", "confianza"],
+        "keys": ["creer", "crees", "confianza"],
         "reflection": "La fe que aparece en este pasaje no consiste en tener todas las respuestas, sino en atreverse a confiar y seguir dando pasos. También podemos acercarnos a Jesús con preguntas y dudas sinceras.",
         "question": "¿Qué te cuesta confiar o poner en manos de Dios en este momento?",
         "commitment_title": "Da un paso desde la confianza.",
@@ -156,10 +156,36 @@ else:
     excerpt = passage.strip()
 
 normalized_passage = normalize(passage)
-theme = next(
-    (item for item in THEMES if any(normalize(key) in normalized_passage for key in item["keys"])),
-    None
-)
+normalized_reference = normalize(reference)
+
+# Algunas lecturas tienen un contexto muy concreto que conviene reconocer
+# por su cita bíblica, no por una palabra aislada del texto.
+if normalized_reference.startswith("lucas 14, 1"):
+    theme = THEMES[0]  # Jesús cura en sábado y recuerda que la persona está primero.
+else:
+    # Puntuar coincidencias evita que la primera palabra genérica encontrada
+    # decida por sí sola la reflexión. Se comparan palabras completas o sus
+    # comienzos (por ejemplo, "perdon" con "perdonar").
+    scored_themes = []
+    for item in THEMES:
+        score = 0
+        matched = set()
+        for key in item["keys"]:
+            normalized_key = normalize(key)
+            if " " in normalized_key:
+                found = normalized_key in normalized_passage
+            else:
+                found = any(
+                    token.startswith(normalized_key)
+                    for token in re.findall(r"\\b[\\w]+\\b", normalized_passage)
+                )
+            if found and normalized_key not in matched:
+                score += 1
+                matched.add(normalized_key)
+        if score:
+            scored_themes.append((score, item))
+    theme = max(scored_themes, key=lambda result: result[0])[1] if scored_themes else None
+
 if theme is None:
     # This fallback explicitly refers to the actual passage and its citation,
     # without pretending to have identified a theme it could not detect.
