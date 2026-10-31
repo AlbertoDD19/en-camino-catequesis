@@ -19,11 +19,11 @@ SOURCE_URL = f"https://www.vaticannews.va/es/evangelio-de-hoy/{DATE_PATH}.html"
 # Reflections are curated for identifiable Gospel passages.
 # Unknown passages use a neutral prompt instead of a guessed interpretation.
 PASSAGE_REFLECTIONS = {
-    "lucas 14, 1": {
-        "reflection": "Jesús está comiendo en casa de un fariseo y observa cómo lo vigilan. Cuando se presenta ante Él un hombre enfermo, Jesús plantea una pregunta incómoda: ¿qué importa más, cumplir una norma sin mirar a nadie o hacer el bien a una persona que necesita ayuda? El pasaje nos invita a revisar una fe que se queda en las apariencias y olvidar la compasión.",
-        "question": "¿Te ha pasado alguna vez que, por seguir las reglas del grupo o por no complicarte, has dejado de hacer lo que sabías que era bueno? ¿Qué habría cambiado si hubieras puesto a la persona en primer lugar?",
-        "commitment_title": "Que nadie quede en segundo plano.",
-        "commitment": "Hoy, cuando tengas que elegir entre quedar bien o hacer lo correcto, detente un momento. Escucha a la persona que tienes delante y haz un gesto concreto de cuidado, aunque nadie te aplauda."
+    "lucas 14, 1.7-11": {
+        "reflection": "Jesús está en casa de un fariseo y se fija en cómo los invitados eligen los primeros puestos. A partir de esa escena, les enseña que no necesitan colocarse por encima de los demás para tener valor. Invita a elegir el último lugar y recuerda que quien se engrandece será humillado, y quien se humilla será enaltecido. Jesús propone una humildad que no busca reconocimiento ni convierte las relaciones en una competición.",
+        "question": "¿En qué momentos intentas destacar, quedar por encima o recibir reconocimiento? ¿Cómo cambiaría tu manera de tratar a los demás si no necesitaras demostrar que eres más importante?",
+        "commitment_title": "Haz sitio a los demás.",
+        "commitment": "Hoy deja que otra persona tenga protagonismo: escucha sin interrumpir, reconoce algo bueno que haya hecho o cede tu lugar sin esperar que te lo agradezcan."
     }
 }
 
@@ -46,6 +46,7 @@ if "Evangelio del Día" not in page_text or "Las palabras de los Papas" not in p
 section = page_text.split("Evangelio del Día", 1)[1].split("Las palabras de los Papas", 1)[0]
 reference_pattern = re.compile(
     r"\b(?:Mateo|Marcos|Lucas|Juan)\s+\d{1,3},\s*\d{1,3}[a-z]?"
+    r"(?:\s*[.;]\s*\d{1,3}[a-z]?(?:\s*[-–—]\s*\d{1,3}[a-z]?)?)?"
     r"(?:\s*[-–—]\s*\d{1,3}[a-z]?)?"
     r"(?:\s*;\s*\d{1,3}[a-z]?(?:\s*[-–—]\s*\d{1,3}[a-z]?)?)*"
 )
