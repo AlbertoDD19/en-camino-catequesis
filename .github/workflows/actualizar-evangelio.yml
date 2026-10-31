@@ -20,13 +20,12 @@ jobs:
           python3 - <<'PY'
           from datetime import datetime
           from zoneinfo import ZoneInfo
-          from pathlib import Path
-          import os
+                    import os
 
           now = datetime.now(ZoneInfo("Europe/Madrid"))
           should_run = now.hour == 1
           with open(os.environ["GITHUB_OUTPUT"], "a") as output:
-              output.write(f"ejecutar={'true' if should_run else 'false'}\\n")
+              output.write(f"ejecutar={'true' if should_run else 'false'}\n")
           print(f"Hora peninsular: {now:%Y-%m-%d %H:%M %Z}. Ejecutar: {should_run}")
           PY
       - name: Descargar el repositorio
