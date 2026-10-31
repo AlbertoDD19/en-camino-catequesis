@@ -177,7 +177,7 @@ else:
             else:
                 found = any(
                     token.startswith(normalized_key)
-                    for token in re.findall(r"\\b[\\w]+\\b", normalized_passage)
+                    for token in re.findall(r"\b[\w]+\b", normalized_passage)
                 )
             if found and normalized_key not in matched:
                 score += 1
