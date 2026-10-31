@@ -29,7 +29,9 @@ PASSAGE_REFLECTIONS = {
 
 def normalize(text):
     text = unicodedata.normalize("NFD", text.lower())
-    return "".join(char for char in text if unicodedata.category(char) != "Mn")
+    text = "".join(char for char in text if unicodedata.category(char) != "Mn")
+    text = re.sub(r"\\s*([,.;])\\s*", r"\\1", text)
+    return re.sub(r"\\s+", " ", text).strip()
 
 request = urllib.request.Request(
     SOURCE_URL,
@@ -68,22 +70,9 @@ words = passage.split()
 if len(words) < 8:
     raise RuntimeError("El texto del Evangelio no parece estar completo.")
 
-# Mostrar frases completas: nunca cortar el fragmento en mitad de una oración.
-sentences = re.findall(r".*?[.!?](?:[»”\"']|(?=\s|$))", passage)
-if sentences:
-    excerpt = ""
-    for sentence in sentences:
-        candidate = (excerpt + " " + sentence).strip()
-        if len(candidate.split()) > 48 and excerpt:
-            break
-        excerpt = candidate
-        if len(excerpt.split()) >= 25:
-            break
-    if not excerpt:
-        excerpt = sentences[0].strip()
-else:
-    # Respaldo conservador si la página no trae puntuación reconocible.
-    excerpt = passage.strip()
+# Mostrar una cita literal breve del texto original, sin parafrasearlo.
+# El enlace de Vatican News permite leer el pasaje completo.
+excerpt = " ".join(words[:25]).rstrip(" ,;:") + "…"
 
 normalized_reference = normalize(reference)
 theme = next(
