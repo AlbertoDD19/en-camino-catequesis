@@ -20,7 +20,7 @@ jobs:
           python3 - <<'PY'
           from datetime import datetime
           from zoneinfo import ZoneInfo
-                    import os
+          import os
 
           now = datetime.now(ZoneInfo("Europe/Madrid"))
           should_run = now.hour == 1
