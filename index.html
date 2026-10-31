@@ -135,6 +135,20 @@ footer{border-top:1px solid var(--line);padding:24px 0 35px;color:var(--muted);f
  <p class="muted">Puedes buscar palabras, temas o recorrer los libros y capítulos de la Biblia en Quiero Ser Santo, que utiliza la traducción oficial de la Conferencia Episcopal Española.</p>
  <a class="gospel-link" href="https://www.quierosersanto.com/biblia/" target="_blank" rel="noopener noreferrer">Abrir el buscador de la Biblia ↗</a>
 </div>
+<div class="section-head"><div><div class="kicker">Déjate sorprender por la Palabra</div><h2>Un pasaje para lo que estás viviendo.</h2><p class="muted">No es una frase suelta al azar: cada pasaje viene con una idea para comprenderlo y una pregunta para llevarlo a tu vida. Lee la cita completa en la Biblia.</p></div></div>
+<div class="panel" id="random-bible-panel">
+ <div class="tag">La Palabra puede iluminarte</div>
+ <h3 id="random-bible-title" style="margin:10px 0 8px">¿Qué necesitas escuchar hoy?</h3>
+ <p class="muted" id="random-bible-intro">Pulsa el botón y encuentra un pasaje sobre la confianza, la amistad, el perdón, la esperanza o el sentido de tu vida.</p>
+ <div id="random-bible-result" style="display:none;margin-top:18px">
+  <div class="tag" id="random-bible-theme"></div>
+  <h2 id="random-bible-reference" style="color:var(--green);margin:8px 0 12px"></h2>
+  <p id="random-bible-meaning" style="font-size:14px;line-height:1.75"></p>
+  <div class="question"><strong>Para llevarlo a tu vida</strong><p id="random-bible-question"></p></div>
+  <a class="gospel-link" id="random-bible-link" href="https://www.quierosersanto.com/biblia/" target="_blank" rel="noopener noreferrer">Busca y lee el pasaje completo ↗</a>
+ </div>
+ <button class="btn primary" style="margin-top:16px" id="random-bible-button" onclick="showRandomBiblePassage()">Dame un pasaje ↗</button>
+</div>
 <div class="panel" style="margin-top:14px"><div class="tag">Fuente de la traducción</div><h3 style="margin:10px 0 6px">Biblia de la Conferencia Episcopal Española</h3><p class="muted">Si prefieres consultar directamente la fuente oficial, puedes acceder a la Biblia de la Conferencia Episcopal Española.</p><a class="gospel-link" href="https://www.conferenciaepiscopal.es/biblia/" target="_blank" rel="noopener noreferrer">Consultar la Biblia de la CEE ↗</a></div>
 <div class="section-head"><div><div class="kicker">Aprende a acercarte a ella</div><h2>Pequeñas pistas para leer la Biblia.</h2><p class="muted">Abre cada tarjeta cuando necesites una ayuda. No hay que correr: leer poco y dejarse tocar por una frase puede ser suficiente.</p></div></div>
 <div class="accordion">
@@ -198,6 +212,22 @@ function applyGospelReflection(data){
  title.textContent=data.commitment_title;
  task.textContent=data.commitment;
 }
+const meaningfulBiblePassages=[
+ {ref:'Salmo 23, 1-4',theme:'Confianza en medio de la incertidumbre',meaning:'La imagen del pastor habla de un Dios que acompaña y cuida, también cuando atravesamos momentos difíciles. La confianza no significa que nunca tengamos miedo, sino que no tenemos que caminar solos.',question:'¿Qué situación te preocupa y con quién podrías compartirla?'},
+ {ref:'Isaías 41, 10',theme:'No estás solo',meaning:'El profeta anima al pueblo a no dejarse vencer por el miedo: Dios permanece cerca y sostiene. Es una invitación a pedir ayuda y recordar que nuestra fragilidad no nos quita valor.',question:'¿Qué te ayudaría a sentirte acompañado hoy?'},
+ {ref:'Lucas 10, 25-37',theme:'Amar con hechos',meaning:'La parábola del buen samaritano cambia la pregunta: no basta con saber quién es mi prójimo; puedo convertirme en prójimo de quien necesita ayuda. La compasión se vuelve concreta.',question:'¿Quién puede necesitar hoy que te detengas y le prestes atención?'},
+ {ref:'Lucas 15, 11-24',theme:'Volver a empezar',meaning:'El padre de la parábola recibe al hijo que regresa sin humillarlo. Jesús presenta un amor que abre la puerta al perdón y a una nueva oportunidad.',question:'¿Hay algo que necesites reparar o una relación en la que te gustaría dar un primer paso?'},
+ {ref:'Mateo 5, 1-12',theme:'Una felicidad distinta',meaning:'Las bienaventuranzas muestran que la felicidad de Jesús no depende de aparentar, imponerse o tenerlo todo. Pone en el centro la misericordia, la paz, la justicia y un corazón sincero.',question:'¿Cuál de las bienaventuranzas te cuesta más vivir y por qué?'},
+ {ref:'Juan 15, 9-13',theme:'La amistad que permanece',meaning:'Jesús invita a permanecer en su amor y relaciona ese amor con la entrega por los amigos. La amistad auténtica no es solo pasar buenos ratos: también es cuidar, escuchar y estar presentes.',question:'¿Cómo puedes demostrar hoy a alguien que es importante para ti?'},
+ {ref:'Marcos 4, 35-41',theme:'Cuando aparece el miedo',meaning:'Los discípulos sienten miedo en la tormenta y Jesús está con ellos. El relato no promete una vida sin dificultades; invita a confiar y a hablar con Jesús también desde el temor.',question:'¿Qué “tormenta” estás atravesando y qué persona puede acompañarte?'},
+ {ref:'Mateo 6, 25-34',theme:'Vivir el presente',meaning:'Jesús invita a no quedar atrapados por la preocupación del mañana. No significa ignorar los problemas, sino atender al día de hoy y dar el paso posible sin cargar con todo de golpe.',question:'¿Qué pequeño paso puedes dar hoy, sin exigirte resolverlo todo?'},
+ {ref:'1 Corintios 13, 4-7',theme:'El amor se nota',meaning:'Pablo describe el amor con actitudes concretas: paciencia, cuidado, humildad y perseverancia. Es una buena medida para nuestras relaciones, más allá de las palabras bonitas.',question:'¿Qué actitud de este texto podrías practicar con alguien de tu entorno?'},
+ {ref:'Salmo 139, 1-14',theme:'Tu vida tiene valor',meaning:'El salmo expresa la certeza de ser conocido por Dios profundamente. No tienes que fingir ser otra persona para tener valor: puedes presentarte tal como eres, con tus preguntas y capacidades.',question:'¿Qué parte de ti te cuesta aceptar y cómo podrías mirarla con más cariño y verdad?'},
+ {ref:'Miqueas 6, 8',theme:'Elegir el bien cada día',meaning:'El profeta resume una vida fiel en practicar la justicia, amar la misericordia y caminar humildemente con Dios. La fe se expresa en decisiones cotidianas, no solo en grandes gestos.',question:'¿Qué decisión sencilla haría hoy más justa o más amable tu clase, casa o grupo?'},
+ {ref:'Romanos 12, 9-18',theme:'Construir paz',meaning:'Pablo propone un amor sincero que honra a los demás, acompaña en la alegría y en la dificultad y busca la paz. No siempre podemos controlar a otros, pero sí cuidar nuestra manera de responder.',question:'¿Qué puedes hacer para cuidar la paz en una relación, sin dejar de poner límites sanos?'}
+];
+function showRandomBiblePassage(){let candidates=randomBiblePassages.filter(p=>p.ref!==lastRandomBiblePassage);if(!candidates.length)candidates=randomBiblePassages;const passage=candidates[Math.floor(Math.random()*candidates.length)];lastRandomBiblePassage=passage.ref;document.getElementById('random-bible-theme').textContent=passage.theme;document.getElementById('random-bible-reference').textContent=passage.ref;document.getElementById('random-bible-meaning').textContent=passage.meaning;document.getElementById('random-bible-question').textContent=passage.question;document.getElementById('random-bible-result').style.display='block';document.getElementById('random-bible-title').textContent='Tu pasaje de hoy';document.getElementById('random-bible-intro').textContent='Tómate un momento. Lee la cita completa y deja que esta idea dialogue con tu vida.';document.getElementById('random-bible-button').textContent='Otro pasaje ↗';}
+let lastRandomBiblePassage='';
 function todayStorageKey(){return 'en-camino-reflexion-'+localDateISO();}
 function saveTodayNote(){const status=document.getElementById('today-note-status');try{localStorage.setItem(todayStorageKey(),document.getElementById('today-note').value);status.textContent='Tu reflexión se ha guardado solo en este dispositivo.';}catch(e){status.textContent='No se ha podido guardar en este navegador.';}}
 function completeDailyCommit(){const status=document.getElementById('daily-commit-status');try{localStorage.setItem('en-camino-compromiso-'+localDateISO(),'done');status.textContent='Compromiso anotado. ¡Que puedas llevarlo a la vida!';document.getElementById('daily-commit-button').textContent='Compromiso anotado ✓';}catch(e){status.textContent='No se ha podido guardar el compromiso.';}}
