@@ -2,7 +2,9 @@ name: Actualizar Evangelio diario
 
 on:
   schedule:
-    - cron: "30 5 * * *"
+    # 00:00 UTC en invierno y 23:00 UTC en verano = 01:00 en España peninsular.
+    - cron: "0 0 * * *"
+    - cron: "0 23 * * *"
   workflow_dispatch:
 
 permissions:
@@ -12,17 +14,37 @@ jobs:
   update-gospel:
     runs-on: ubuntu-latest
     steps:
+      - name: Comprobar si corresponde a la 01:00 peninsular
+        id: hora
+        run: |
+          python3 - <<'PY'
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+          from pathlib import Path
+          import os
+
+          now = datetime.now(ZoneInfo("Europe/Madrid"))
+          should_run = now.hour == 1
+          with open(os.environ["GITHUB_OUTPUT"], "a") as output:
+              output.write(f"ejecutar={'true' if should_run else 'false'}\\n")
+          print(f"Hora peninsular: {now:%Y-%m-%d %H:%M %Z}. Ejecutar: {should_run}")
+          PY
       - name: Descargar el repositorio
+        if: steps.hora.outputs.ejecutar == 'true' || github.event_name == 'workflow_dispatch'
         uses: actions/checkout@v4
       - name: Preparar Python
+        if: steps.hora.outputs.ejecutar == 'true' || github.event_name == 'workflow_dispatch'
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
       - name: Instalar dependencias
+        if: steps.hora.outputs.ejecutar == 'true' || github.event_name == 'workflow_dispatch'
         run: pip install beautifulsoup4
       - name: Obtener el Evangelio de hoy
+        if: steps.hora.outputs.ejecutar == 'true' || github.event_name == 'workflow_dispatch'
         run: python scripts/update_gospel.py
       - name: Guardar cambios
+        if: steps.hora.outputs.ejecutar == 'true' || github.event_name == 'workflow_dispatch'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
