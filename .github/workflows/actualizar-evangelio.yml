@@ -40,7 +40,7 @@ jobs:
               print(f"Hora peninsular: {now:%Y-%m-%d %H:%M %Z}; cron recibido: {scheduled_cron}; cron esperado: {expected_cron}")
 
           with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
-              output.write(f"ejecutar={'true' if should_run else 'false'}\\n")
+              output.write(f"ejecutar={'true' if should_run else 'false'}\n")
           print(f"Ejecutar actualización: {should_run}")
           PY
       - name: Descargar el repositorio
