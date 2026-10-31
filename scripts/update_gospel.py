@@ -129,7 +129,7 @@ passage = section[match.end():].strip(" :–—")
 # Vatican News puede incluir al principio el rango de versículos (por ejemplo, "7-11").
 # Se elimina para que no aparezca como si formara parte de la lectura.
 passage = re.sub(
-    r"^\\s*[.·,;:–—-]*\\s*\\d{1,3}[a-z]?(?:\\s*[-–—]\\s*\\d{1,3}[a-z]?)?\\s+",
+    r"^\s*[.·,;:–—-]*\s*\d{1,3}[a-z]?(?:\s*[-–—]\s*\d{1,3}[a-z]?)?\s+",
     "",
     passage,
     count=1,
@@ -139,7 +139,7 @@ if len(words) < 8:
     raise RuntimeError("El texto del Evangelio no parece estar completo.")
 
 # Mostrar frases completas: nunca cortar el fragmento en mitad de una oración.
-sentences = re.findall(r".*?[.!?](?:[»”\"']|(?=\\s|$))", passage)
+sentences = re.findall(r".*?[.!?](?:[»”\"']|(?=\s|$))", passage)
 if sentences:
     excerpt = ""
     for sentence in sentences:
