@@ -10,6 +10,7 @@ on:
   push:
     paths:
       - ".github/workflows/actualizar-evangelio.yml"
+      - "scripts/update_gospel.py"
 
 permissions:
   contents: write
